@@ -1,0 +1,14 @@
+# Defense in depth: if the document root is ever pointed at the project root
+# instead of /public, protect sensitive files. The recommended setup points
+# the document root at /public, where this file is not consulted.
+<IfModule mod_authz_core.c>
+  <FilesMatch "(?i)\.(sqlite|sql|md|ini)$|^(config|server)\.php$">
+    Require all denied
+  </FilesMatch>
+</IfModule>
+<IfModule !mod_authz_core.c>
+  <FilesMatch "(?i)\.(sqlite|sql|md|ini)$|^(config|server)\.php$">
+    Order allow,deny
+    Deny from all
+  </FilesMatch>
+</IfModule>
