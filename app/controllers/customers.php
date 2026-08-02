@@ -274,7 +274,7 @@ function customers_messages_poll($id): void
     header('Content-Type: application/json');
     $since = input('since') ?: '1970-01-01 00:00:00';
     $msgs = all('SELECT id, sender_type, body, created_at FROM messages WHERE customer_id = ? AND created_at > ? ORDER BY id ASC', [$id, $since]);
-    q('UPDATE messages SET read_at = NOW() WHERE customer_id = ? AND sender_type = ? AND read_at IS NULL', [$id, 'customer']);
+    q('UPDATE messages SET read_at = ? WHERE customer_id = ? AND sender_type = ? AND read_at IS NULL', [date('Y-m-d H:i:s'), $id, 'customer']);
     echo json_encode(['messages' => $msgs, 'server_time' => date('Y-m-d H:i:s')]);
     exit;
 }

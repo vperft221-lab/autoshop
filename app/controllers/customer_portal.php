@@ -382,7 +382,7 @@ function customer_messages(): void
     $c = current_customer();
 
     // Mark staff messages as read the moment the customer opens this page.
-    q('UPDATE messages SET read_at = NOW() WHERE customer_id = ? AND sender_type = ? AND read_at IS NULL', [$c['id'], 'staff']);
+    q('UPDATE messages SET read_at = ? WHERE customer_id = ? AND sender_type = ? AND read_at IS NULL', [date('Y-m-d H:i:s'), $c['id'], 'staff']);
 
     $content = '<h2 class="detail-name">Messages</h2>'
         . '<div class="card job-history-card">'
