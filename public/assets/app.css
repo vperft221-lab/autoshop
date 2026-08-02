@@ -335,3 +335,15 @@ body.customer-portal { background: var(--bg); margin: 0; font-family: inherit; }
 .msg-time { font-size: 11px; color: #999; margin-top: 3px; }
 .msg-form { display: flex; gap: 8px; align-items: flex-end; }
 .msg-form textarea { flex: 1; min-height: 44px; max-height: 100px; resize: vertical; }
+
+.photo-strip-card { padding: 0; overflow: hidden; }
+.photo-strip {
+    position: relative; width: 100%; height: 260px; overflow: hidden; border-radius: 12px;
+}
+.photo-strip-img {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    object-fit: cover; opacity: 0; transform: translateX(-40px);
+    transition: opacity .8s ease, transform .8s ease;
+}
+.photo-strip-img.active { opacity: 1; transform: translateX(0); }
+.photo-strip-img.leaving { opacity: 0; transform: translateX(40px); }

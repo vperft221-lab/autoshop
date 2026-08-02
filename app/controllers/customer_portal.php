@@ -146,9 +146,20 @@ function customer_dashboard(): void
             . '<div class="estimate-notice-body">' . $rows . '</div></div>';
     }
 
-    $content = $estimatesHtml
-        . '<div class="card job-history-card"><h2 class="card-title">Welcome, ' . e(customer_name($c)) . '</h2>'
-        . '<p>Job history, invoices, fault reporting, and appointment booking are coming very soon.</p></div>';
+    $photoStrip = '<div class="card photo-strip-card" style="margin-bottom:18px">'
+        . '<div class="photo-strip" id="dashPhotoStrip">'
+        . '<img src="https://picsum.photos/seed/autoshop1/900/380" alt="" class="photo-strip-img active">'
+        . '<img src="https://picsum.photos/seed/autoshop2/900/380" alt="" class="photo-strip-img">'
+        . '<img src="https://picsum.photos/seed/autoshop3/900/380" alt="" class="photo-strip-img">'
+        . '<img src="https://picsum.photos/seed/autoshop4/900/380" alt="" class="photo-strip-img">'
+        . '<img src="https://picsum.photos/seed/autoshop5/900/380" alt="" class="photo-strip-img">'
+        . '</div></div>';
+
+    $header = '<div style="margin-bottom:18px">'
+        . '<h2 class="detail-name" style="margin:0 0 4px">Welcome, ' . e(customer_name($c)) . ' 👋</h2>'
+        . '<p class="muted" style="margin:0">What can we do for you today?</p></div>';
+
+    $content = $header . $estimatesHtml . $photoStrip;
     echo customer_layout('Dashboard', $content);
 }
 

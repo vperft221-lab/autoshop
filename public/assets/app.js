@@ -174,3 +174,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    const strip = document.getElementById('dashPhotoStrip');
+    if (!strip) return;
+    const imgs = strip.querySelectorAll('.photo-strip-img');
+    if (imgs.length < 2) return;
+
+    let current = 0;
+    setInterval(() => {
+        const next = (current + 1) % imgs.length;
+        imgs[current].classList.remove('active');
+        imgs[current].classList.add('leaving');
+        imgs[next].classList.add('active');
+        setTimeout(() => imgs[current].classList.remove('leaving'), 800);
+        current = next;
+    }, 4000);
+});
