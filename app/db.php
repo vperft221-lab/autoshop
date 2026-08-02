@@ -146,6 +146,8 @@ function sqlite_bootstrap(PDO $pdo): void
         name TEXT NOT NULL,                          -- kept in sync = "first_name last_name" for easy joins/search
         phone TEXT,
         email TEXT,
+        password_hash TEXT,
+        portal_active INTEGER NOT NULL DEFAULT 0,
         address TEXT,
         created_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
@@ -180,6 +182,7 @@ function sqlite_bootstrap(PDO $pdo): void
         diagnosis TEXT,
         estimate REAL NOT NULL DEFAULT 0,
         approved INTEGER NOT NULL DEFAULT 0,
+        approval_status TEXT NOT NULL DEFAULT 'pending', -- pending | approved | declined
         status TEXT NOT NULL DEFAULT 'open',         -- open | in_progress | completed | closed
         estimated_completion TEXT,                   -- planned completion date
         actual_completion TEXT,                      -- actual completion date (set when job is completed)
@@ -213,7 +216,8 @@ function sqlite_bootstrap(PDO $pdo): void
         vehicle_id INTEGER REFERENCES vehicles(id) ON DELETE SET NULL,
         scheduled_at TEXT NOT NULL,
         note TEXT,
-        status TEXT NOT NULL DEFAULT 'scheduled',     -- scheduled | completed | cancelled
+        decline_reason TEXT,
+        status TEXT NOT NULL DEFAULT 'scheduled',     -- pending | scheduled | completed | cancelled | declined
         created_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
     CREATE TABLE invoices (
@@ -259,5 +263,24 @@ function sqlite_bootstrap(PDO $pdo): void
         success INTEGER NOT NULL DEFAULT 0,
         created_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
+    CREATE TABLE sms_messages (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        customer_id INTEGER NOT NULL REFERENCES customers(id) ON DELETE CASCADE,
+        sent_by INTEGER REFERENCES users(id),
+        phone TEXT NOT NULL,
+        message TEXT NOT NULL,
+        status TEXT NOT NULL,                        -- sent | failed
+        created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+    CREATE TABLE messages (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        customer_id INTEGER NOT NULL REFERENCES customers(id) ON DELETE CASCADE,
+        sender_type TEXT NOT NULL,                   -- customer | staff
+        sender_id INTEGER,
+        body TEXT NOT NULL,
+        read_at TEXT,
+        created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
     SQL);
 }
+    
